@@ -6,7 +6,7 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Materia: Estructura de Datos
-## Profesor: Dr. Diego Agustín Ambrosio (Comisión N° 2)
+## Profesor: Dr. Diego Agustín Ambrossio (Comisión N° 2)
 ## Participantes:
  1. Franco Villalva
  2. Oriana Casas
