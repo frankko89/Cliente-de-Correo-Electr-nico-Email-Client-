@@ -12,24 +12,11 @@ Bash
 git clone https://github.com/tu_usuario/nombre_del_repo.git
 cd nombre_del_repo
 python3 main.py
-Estructura del Proyecto
-main.py: Punto de entrada del programa.
 
-user.py: Define la clase User y sus funcionalidades.
-
-message.py: Clase para la creación y manejo de mensajes.
-
-folder.py: Clase para la organización de carpetas de correo.
-
-filters.py: Contiene la lógica para filtrar correos.
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Créditos
 Materia: Estructura de Datos
-
 Profesor: Dr. Diego Agustín Ambrosio (Comisión N° 2)
-
 Participantes:
-
-Franco Villalva
-
-Oriana Casas
+ Franco Villalva
+ Oriana Casas
