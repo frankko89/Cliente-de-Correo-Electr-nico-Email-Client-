@@ -13,8 +13,8 @@
  
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Trello
-link: https://trello.com/b/twW52Da4/proyecto-de-correos
-en este link van a poder ver el avance del de una forma mas secuencial
+##link: https://trello.com/b/twW52Da4/proyecto-de-correos
+ en este link van a poder ver el avance del proyecto de una forma mas secuencial
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
