@@ -1,15 +1,17 @@
 from user import Usuario 
 
 class servidorCorreo():
-    pass
+    def __init__ (self):
+        self.mensajes = {}
 
-class Carpeta(servidorCorreo):
-    pass
-        
-user1 = Usuario("Oriana", "Casas", "oriana@gmail.com")
-user2 = Usuario("Franco", "Bishalba", "elfran@gmail.com")
 
-mensaje = user1.enviar_mensaje(user2, "Importante", "eu")
-user2.recibir_mensaje(mensaje)
-mensaje.mostrar_mensaje()
-        
+def registrarse(self, nombre, apellido, correo, contrasenia):
+        if correo in self.usuarios: #aca revisa si el correo ya existe en el diccionario
+            print("El correo ya está registrado.")
+            return  
+        #si da el caso que no existe va a llamar a la usuario para crear un nuevo usuario y registarlo
+        else:
+            nuevo_usuario = Usuario(nombre, apellido, correo, contrasenia) 
+            self.usuarios[correo] = nuevo_usuario
+            print("Registro exitoso.")
+            return  
