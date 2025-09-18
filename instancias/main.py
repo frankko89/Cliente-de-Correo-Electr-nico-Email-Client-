@@ -1,6 +1,7 @@
 import email_client as ServidorCorreo
 #import mail as Mensaje
 #import user as Usuario
+ServidorCorreo = ServidorCorreo.servidorCorreo()
 
 def menu_principal():
     print("Bienvenido al Cliente de Correo Electrónico")
@@ -16,11 +17,11 @@ def primera_opcion():
     print("-------------------------")
     email = input("Correo electrónico: ")
     password = input("Contraseña: ")
-    ServidorCorreo.iniciar_sesion(email, password)
-    if ServidorCorreo.iniciar_sesion == False:
+    usuario = ServidorCorreo.iniciar_sesion(email, password)
+    if usuario == False:
         print("Error de inicio de sesión. Verifique sus datos.")
     else:
-        print(f"Bienvenido, {ServidorCorreo.self.usuario.nombre}!")
+        print(f"Bienvenido, {usuario.nombre_completo}!")
         #return bandeja_entrada()
         # Más adelante acá se conectaría el menú de Carpeta y Mensajes
 
@@ -31,13 +32,13 @@ def segunda_opcion():
     nuevo_apellido = input("Ingrese su apellido: ")
     nuevo_correo = input("Ingrese su correo electrónico: ")
     nueva_contrasenia = input("Ingrese su contraseña: ")
-    ServidorCorreo.registrarse(nuevo_nombre, nuevo_apellido, nuevo_correo, nueva_contrasenia)
-    if ServidorCorreo.registrarse == False:
+    nuevo_usuario = ServidorCorreo.registrarse(nuevo_nombre, nuevo_apellido, nuevo_correo, nueva_contrasenia)
+    if nuevo_usuario == False:
         print("Error al registrarse. Intente nuevamente.")
     else:
         print("Registro exitoso. Iniciando sesión...")
         ServidorCorreo.iniciar_sesion(nuevo_correo, nueva_contrasenia)
-        print(f"Bienvenido, {ServidorCorreo.self.usuario.nombre}!")
+        print(f"Bienvenido, {nuevo_usuario.nombre_completo}!")
         #return bandeja_entrada()
         # Más adelante acá se conectaría el menú de Carpeta y Mensajes
 
