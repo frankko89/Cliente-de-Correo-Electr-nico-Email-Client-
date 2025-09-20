@@ -25,4 +25,4 @@ class Usuario():
         return Mensaje(self,destinatario, asunto, cuerpo, fecha_actual)
     
     def recibir_mensaje(self, mensaje):
-        print(f"{self.nombre_completo} recibió un mensaje de {mensaje.remitente.nombre_completo}")
+        pass
