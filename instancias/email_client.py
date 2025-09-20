@@ -22,7 +22,6 @@ class servidorCorreo():
             else:
                 nuevo_usuario = Usuario(nombre, apellido, correo, contrasenia) 
                 self._usuario[correo] = nuevo_usuario
-                print("Registro exitoso.")
                 return nuevo_usuario 
 
     def iniciar_sesion(self, correo, contrasenia):
@@ -35,7 +34,6 @@ class servidorCorreo():
             
         buscar_usuario = self._usuario[correo] #si existe lo busca en el diccionario
         if buscar_usuario.contrasenia == contrasenia: #revisa si la contrasenia es correcta
-                print(f"inicio de sesion exitoso. ¡Bienvenido {buscar_usuario.nombre_completo}!")
                 return buscar_usuario
         else:
             print("contrasenia incorrecta")
@@ -46,10 +44,12 @@ class servidorCorreo():
     #aca ahora vamos a revisar si tanto el remitente como el destinatario existen y si no es el caso vamos a tirar un error
         if remitente_mail not in self._usuario:
             print(f"El correo del remitente {remitente_mail} no está registrado.")
+            print("-------------------------")
             return False
         
         if destinatario_mail not in self._usuario:
             print(f"El correo del destinatario {destinatario_mail} no está registrado.")
+            print("-------------------------")
             return False
         
         remitente = self._usuario[remitente_mail]
@@ -59,6 +59,7 @@ class servidorCorreo():
         remitente.bandeja_salida.append(Nuevo_mensaje)
         destinatario.bandeja_entrada.append(Nuevo_mensaje)  
         print("Mensaje enviado exitosamente.")  
+        print("-------------------------")
         return True
     # y por ultimo hacemos que tanto en la bandeja del remitente como en la del destinatario se guarde el mensaje que se envio y terminamos la funcioon con un return para terminar por completo la funcin
 
