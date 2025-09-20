@@ -29,13 +29,10 @@ class servidorCorreo():
         if correo not in self._usuario: #revisa si el correo existe en el diccionario
                 print("El correo no está registrado, por favor registrese.")
                 return False
-        elif correo == "" or contrasenia == "":
+        elif contrasenia == "":
                 print("Todos los campos son obligatorios.")
                 return False
-        elif "@" not in correo or "." not in correo:
-                print("El correo no es válido.")
-                return False
-    
+            
         buscar_usuario = self._usuario[correo] #si existe lo busca en el diccionario
         if buscar_usuario.contrasenia == contrasenia: #revisa si la contrasenia es correcta
                 print(f"inicio de sesion exitoso. ¡Bienvenido {buscar_usuario.nombre_completo}!")
