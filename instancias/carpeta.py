@@ -19,11 +19,15 @@ class Carpeta():
         for x in self.mensajes: 
             if asunto_filtro in x.asunto:
                 busqueda.append(x)
-        return busqueda
+                return busqueda
+            else:
+                return False
 
     def filtrar_por_usuario(self, usuario_filtro):
         busqueda = []
         for x in self.mensajes: 
             if usuario_filtro in x.remitente:
                 busqueda.append(x)
-        return busqueda
+                return busqueda
+            else:
+                return False

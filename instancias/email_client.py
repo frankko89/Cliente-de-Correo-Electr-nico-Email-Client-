@@ -1,15 +1,20 @@
 from user import Usuario 
 from mail import Mensaje
+from carpeta import Carpeta
+import datetime as dt
+
 class servidorCorreo():
     def __init__ (self):
         self._usuario = {}
+        self.bandeja_entrada = Carpeta("Bandeja de Entrada")
+        self.bandeja_salida = Carpeta("Bandeja de Salida")
 
 
     def registrarse(self, nombre, apellido, correo, contrasenia):
             if correo in self._usuario: #aca revisa si el correo ya existe en el diccionario
                 print("El correo ya está registrado.")
                 return False #esto lo ponemos para que el codigo si lo necesita pueda usarlo en alguna linea
-            #si da el caso que no existe va a llamar a la usuario para crear un nuevo usuario y registarlo
+            #si da el caso que no existe va a llamar a usuario para crear un nuevo usuario y registarlo
             elif nombre == "" or apellido == "" or correo == "" or contrasenia == "":
                 print("Todos los campos son obligatorios.")
                 return False
@@ -40,13 +45,8 @@ class servidorCorreo():
             return False
         
     def enviar_mensaje(self, remitente_mail, destinatario_mail, asunto, cuerpo):
-
-    #aca ahora vamos a revisar si tanto el remitente como el destinatario existen y si no es el caso vamos a tirar un error
-        if remitente_mail not in self._usuario:
-            print(f"El correo del remitente {remitente_mail} no está registrado.")
-            print("-------------------------")
-            return False
         
+    #aca ahora vamos a revisar si el destinatario existe y si no es el caso vamos a tirar un error
         if destinatario_mail not in self._usuario:
             print(f"El correo del destinatario {destinatario_mail} no está registrado.")
             print("-------------------------")
@@ -54,15 +54,31 @@ class servidorCorreo():
         
         remitente = self._usuario[remitente_mail]
         destinatario = self._usuario[destinatario_mail]
+        fecha_actual = dt.date.today()
     #aca si no tenemos ningun problema con los correos se los asignamos a las variables de la clase Mensaje para poder crear el modelo como tal
-        Nuevo_mensaje = Mensaje(remitente, destinatario, asunto, cuerpo)
-        remitente.bandeja_salida.append(Nuevo_mensaje)
+        Nuevo_mensaje = Mensaje(remitente, destinatario, asunto, cuerpo, fecha_actual)
+        self.bandeja_salida.append(Nuevo_mensaje)
         destinatario.bandeja_entrada.append(Nuevo_mensaje)  
         print("Mensaje enviado exitosamente.")  
         print("-------------------------")
         return True
     # y por ultimo hacemos que tanto en la bandeja del remitente como en la del destinatario se guarde el mensaje que se envio y terminamos la funcioon con un return para terminar por completo la funcin
 
-    def organizar_mensajes():
-        pass
-    #creamos la clase esta pero no la vamos a estar utilizando por el momento 
+    def organizar_mensajes(self):
+            #aquí iría la lógica para mostrar y organizar los mensajes mostrando solo asunto y usuario
+            pass
+    
+    def buscar_mensajes(self, criterio):
+            resultados_asunto = self.bandeja_entrada.filtrar_por_asunto(criterio) or self.bandeja_salida.filtrar_por_asunto(criterio)
+            resultados_usuario = self.bandeja_entrada.filtrar_por_usuario(criterio) or self.bandeja_salida.filtrar_por_usuario(criterio)
+            resultados = resultados_asunto + resultados_usuario
+            
+            if not resultados:
+                print("No se encontraron mensajes que coincidan con el criterio.")
+            else:
+                print(f"Se encontraron {len(resultados)} mensajes:")
+                for mensaje in resultados:
+                    #llamaria a organizar_mensajes() para mostrar los mensajes encontrados con el asunto y usuario
+                    pass
+
+    
