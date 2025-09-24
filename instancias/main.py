@@ -1,4 +1,5 @@
 import email_client as ServidorCorreo
+from carpeta import Carpeta
 #import mail as Mensaje
 #import user as Usuario
 ServidorCorreo = ServidorCorreo.servidorCorreo()
@@ -11,6 +12,17 @@ def menu_principal():
     print("-------------------------")
     opcion = input("Seleccione una opción: ")
     return opcion
+
+def inicio():
+    print("INICIO")
+    print("1. Enviar correo")
+    print("2. Revisar bandeja de entrada")
+    print("3. Ver bandeja de salida")
+    print("4. Buscar mensajes por asunto o usuario")
+    print("5. Cerrar sesión")
+    print("-------------------------")
+    seleccion = input("Seleccione una opción: ")
+    return seleccion
 
 def primera_opcion():
     print("Iniciar sesión")
@@ -25,8 +37,7 @@ def primera_opcion():
     else:
         print(f"Bienvenido, {usuario.nombre_completo}!")
         print("-------------------------")
-        #return bandeja_entrada()
-        # Más adelante acá se conectaría el menú de Carpeta y Mensajes
+        return usuario
 
 def segunda_opcion():
     print("Registrarse")
@@ -46,29 +57,70 @@ def segunda_opcion():
         ServidorCorreo.iniciar_sesion(nuevo_correo, nueva_contrasenia)
         print(f"Bienvenido, {nuevo_usuario.nombre_completo}!")
         print("-------------------------")
-        #return bandeja_entrada()
-        # Más adelante acá se conectaría el menú de Carpeta y Mensajes
+        return nuevo_usuario
 
 def bandeja_entrada():
-    print("Bandeja de Entrada")
-    print("-------------------------")
-    #funciones de Carpeta y Mensajes
-    input("Presione Enter para regresar al menú principal.")
+    #llamaría a la funcion organizar_mensajes() de la clase ServidorCorreo 
+    #permitiría seleccionar y leer mensajes con un remitente distinto al usuario actual
+    print("BANDEJA DE ENTRADA")
+
+def bandeja_salida():
+    #llamaría a la funcion organizar_mensajes() de la clase ServidorCorreo 
+    #permitiría seleccionar y leer mensajes enviados por el usuario actual
+    print("BANDEJA DE SALIDA")
     
 def main():
+    sesion_iniciada = False
+    
     while True:
-        opcion = menu_principal()
-        if opcion == "1":
-            primera_opcion()
-        elif opcion == "2":
-            segunda_opcion()
-        elif opcion == "3":
-            print("Saliendo...")
-            print("-------------------------")
-            break
+        if not sesion_iniciada:
+            opcion = menu_principal()
+            if opcion == "1":
+                usuario = primera_opcion()
+                if usuario:
+                    sesion_iniciada = True
+            elif opcion == "2":
+                usuario = segunda_opcion()
+                if usuario:
+                    sesion_iniciada = True
+            elif opcion == "3":
+                print("Saliendo...")
+                print("-------------------------")
+                break
+            else:
+                print("Opción no válida. Intente de nuevo.")
+                print("-------------------------")
+            
         else:
-            print("Opción no válida. Intente de nuevo.")
-            print("-------------------------")
+            seleccion = inicio()
+            if seleccion == "1":
+                print("Enviar correo")
+                print("-------------------------")
+                remitente_mail = usuario.correo
+                destinatario_mail = input("Ingrese el correo electrónico del destinatario: ")
+                asunto = input("Ingrese el asunto del correo: ")
+                cuerpo = input("Ingrese el cuerpo del correo: ")
+                ServidorCorreo.enviar_mensaje(remitente_mail, destinatario_mail, asunto, cuerpo)
+
+            elif seleccion == "2":
+                bandeja_entrada()
+
+            elif seleccion == "3":
+                bandeja_salida()
+
+            elif seleccion == "4":
+                print("Buscar mensajes")
+                criterio = input("Ingrese el asunto o usuario para buscar: ")
+                ServidorCorreo.buscar_mensajes(criterio)
+
+            elif seleccion == "5":
+                print("Cerrando sesión...")
+                print("-------------------------")
+                sesion_iniciada = False
+            
+            else:
+                print("Opción no válida. Intente de nuevo.")
+                print("-------------------------")
 
 if __name__ == "__main__":
     main()

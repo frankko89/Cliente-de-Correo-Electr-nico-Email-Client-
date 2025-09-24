@@ -1,5 +1,3 @@
-import datetime as dt
-
 class Mensaje():
     def __init__(self, remitente, destinatario, asunto, cuerpo, fecha):
         self.__remitente = remitente
@@ -22,3 +20,7 @@ class Mensaje():
         print(f"Asunto: {self.__asunto}")
         print(f"Fecha: {self.__fecha}")
         print(f"Cuerpo: {self.__cuerpo}")
+        
+    def marcar_como_leido(self):
+        self.__leido = True 
+        print("El mensaje ha sido marcado como leído.")
