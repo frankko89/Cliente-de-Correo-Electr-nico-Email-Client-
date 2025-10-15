@@ -1,5 +1,4 @@
 import email_client as ServidorCorreo
-from carpeta import Carpeta
 #import mail as Mensaje
 #import user as Usuario
 ServidorCorreo = ServidorCorreo.servidorCorreo()
@@ -59,15 +58,23 @@ def segunda_opcion():
         print("-------------------------")
         return nuevo_usuario
 
-def bandeja_entrada():
-    #llamaría a la funcion organizar_mensajes() de la clase ServidorCorreo 
-    #permitiría seleccionar y leer mensajes con un remitente distinto al usuario actual
+def bandeja_entrada(usuario_logueado):
     print("BANDEJA DE ENTRADA")
+    mostrar_lista_mensajes(usuario_logueado.bandeja_entrada.mensajes)
 
-def bandeja_salida():
-    #llamaría a la funcion organizar_mensajes() de la clase ServidorCorreo 
-    #permitiría seleccionar y leer mensajes enviados por el usuario actual
+def bandeja_salida(usuario_logueado):
     print("BANDEJA DE SALIDA")
+    mostrar_lista_mensajes(usuario_logueado.bandeja_salida.mensajes)
+
+def mostrar_lista_mensajes(lista_de_mensajes):
+    if not lista_de_mensajes:
+        print("No se encontraron mensajes.")
+        print("-------------------------")
+        return
+
+    for i, m in enumerate(lista_de_mensajes):
+        print(f"{i+1}. De: {m.remitente.nombre_completo} | Asunto: {m.asunto} | Fecha: {m.fecha}")
+    print("-------------------------")
     
 def main():
     sesion_iniciada = False
@@ -103,15 +110,24 @@ def main():
                 ServidorCorreo.enviar_mensaje(remitente_mail, destinatario_mail, asunto, cuerpo)
 
             elif seleccion == "2":
-                bandeja_entrada()
+                bandeja_entrada(usuario)
 
             elif seleccion == "3":
-                bandeja_salida()
+                bandeja_salida(usuario)
 
             elif seleccion == "4":
                 print("Buscar mensajes")
                 criterio = input("Ingrese el asunto o usuario para buscar: ")
-                ServidorCorreo.buscar_mensajes(criterio)
+                resultados_entrada = usuario.bandeja_entrada.buscar_mensajes(criterio)
+                resultados_salida = usuario.bandeja_salida.buscar_mensajes(criterio)
+                resultados_totales = resultados_entrada + resultados_salida
+                
+                if not resultados_totales:
+                    print("No se encontraron mensajes que coincidan con la búsqueda.")
+                else:
+                    print(f"Se encontraron {len(resultados_totales)} resultados:")
+                    mostrar_lista_mensajes(resultados_totales)
+                    
 
             elif seleccion == "5":
                 print("Cerrando sesión...")
