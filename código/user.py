@@ -1,13 +1,16 @@
 import datetime as dt
 from mail import Mensaje
+from folder import Carpeta
 
 class Usuario():
     def __init__(self, nombre, apellido, correo, contrasenia):
         self.__nombre = nombre
         self.__apellido = apellido
         self.__correo = correo 
-        self._contrasenia = contrasenia
-    
+        self.__contrasenia = contrasenia
+        self.__bandeja_entrada = Carpeta("Bandeja de Entrada")
+        self.__bandeja_salida = Carpeta("Bandeja de Salida")
+            
     @property
     def correo(self):
         return self.__correo
@@ -18,11 +21,12 @@ class Usuario():
     
     @property
     def contrasenia(self):
-        return self._contrasenia
+        return self.__contrasenia
     
-    def enviar_mensaje(self, destinatario, asunto, cuerpo):
-        fecha_actual = dt.date.today()
-        return Mensaje(self,destinatario, asunto, cuerpo, fecha_actual)
+    @property
+    def bandeja_entrada(self):
+        return self.__bandeja_entrada
     
-    def recibir_mensaje(self, mensaje):
-        pass
+    @property
+    def bandeja_salida(self):
+        return self.__bandeja_salida

@@ -5,6 +5,7 @@ class Mensaje():
         self.__asunto = asunto
         self.__cuerpo = cuerpo
         self.__fecha = fecha
+        self.__leido = False
         
     @property
     def remitente(self):
@@ -14,13 +15,29 @@ class Mensaje():
     def destinatario(self):
         return self.__destinatario
     
+    @property
+    def asunto(self):
+        return self.__asunto
+    
+    @property
+    def cuerpo(self):
+        return self.__cuerpo
+    
+    @property
+    def fecha(self):
+        return self.__fecha
+    
+    @property
+    def leido(self):
+        return self.__leido
+    
     def mostrar_mensaje(self):
-        print(f"De: {self.__remitente.nombre_completo} <{self.__remitente.correo}>")
-        print(f"Para: {self.__destinatario.nombre_completo} <{self.__destinatario.correo}>")
-        print(f"Asunto: {self.__asunto}")
-        print(f"Fecha: {self.__fecha}")
-        print(f"Cuerpo: {self.__cuerpo}")
+        print(f"De: {self.remitente.nombre_completo} <{self.remitente.correo}>")
+        print(f"Para: {self.destinatario.nombre_completo} <{self.destinatario.correo}>")
+        print(f"Asunto: {self.asunto}")
+        print(f"Fecha: {self.fecha}")
+        print(f"Cuerpo: {self.cuerpo}")
         
     def marcar_como_leido(self):
-        self.__leido = True 
+        self.leido = True 
         print("El mensaje ha sido marcado como leído.")
