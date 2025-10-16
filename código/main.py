@@ -19,7 +19,8 @@ def inicio():
     print("3. Ver bandeja de salida")
     print("4. Buscar mensajes por asunto o usuario")
     print("5. Ver estructuras de las carpetas") #agregamos una nueva seccion para poder ver la estructura del arbol
-    print("6. Cerra sesion")
+    print("6. Mover un mensaje a una carpeta.") #nueva función para mover mensajes de una carpeta a otra
+    print("7. Cerrar sesion")
     print("-------------------------")
     seleccion = input("Seleccione una opción: ")
     return seleccion
@@ -88,6 +89,41 @@ def mostrar_lista_mensajes(lista_de_mensajes):
     for i, m in enumerate(lista_de_mensajes):
         print(f"{i+1}. De: {m.remitente.nombre_completo} | Asunto: {m.asunto} | Fecha: {m.fecha}")
     print("-------------------------")
+
+def mover_mensaje(usuario):
+    #logica para que el usuario mueva mensaje entre dos carpetas existentes en su buzón.
+    print("MOVER MENSAJE")
+    nombre_origen = input("Ingrese el nombre de la carpeta origen (ej:bandeja de entrada): ")
+    carpeta_origen = usuario.buscar_carpeta(usuario.carpeta_raiz, nombre_origen)
+    
+    if not carpeta_origen:
+        print(f"Error: Carpeta '{nombre_origen}' no encontrada. Intente de nuevo.")
+        return
+    
+    mensajes_en_origen = carpeta_origen.mensajes
+    if not mensajes_en_origen:
+        print(f"La carpeta '{nombre_origen}' está vacía. No hay mensajes para mover.")
+        return
+    
+    print(f"\nMensajes en '{nombre_origen}':")
+    mostrar_lista_mensajes(mensajes_en_origen)
+    
+    try:
+        seleccion_mensaje = int(input("Ingrese el NÚMERO del mensaje a mover: ")) - 1
+        if not (0 <= seleccion_mensaje < len(mensajes_en_origen)):
+            print("Selección inválida.")
+            return
+        
+        mensaje_a_mover = mensajes_en_origen[seleccion_mensaje]
+        
+    except ValueError:
+        print("Entrada no válida.")
+        return
+    
+    nombre_destino = input("Ingrese el nombre de la carpeta destino (ej: bandeja de salida): ")
+    
+    usuario.mover_mensaje(mensaje_a_mover, nombre_origen, nombre_destino)
+    print("-------------------------")
     
 def main():
     sesion_iniciada = False
@@ -149,12 +185,14 @@ def main():
                 print("-------------------------")
             
             elif seleccion == "6":
+                mover_mensaje(usuario)
+            
+            elif seleccion == "7":
                 print("Cerrando sesión...")
                 print("-------------------------")
                 sesion_iniciada = False
             
             else:
-
                 print("Opción no válida. Intente de nuevo.")
                 print("-------------------------")
 

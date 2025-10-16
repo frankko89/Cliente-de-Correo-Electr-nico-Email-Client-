@@ -9,8 +9,8 @@ class Usuario():
         self.__correo = correo 
         self.__contrasenia = contrasenia
         self.__carpeta_raiz = Carpeta(f"carpetas de {self.nombre_completo}")
-        self.__bandeja_entrada = self.__carpeta_raiz.agregar_subcarpeta("bandeja de entrada")
-        self.__bandeja_salida = self.__carpeta_raiz.agregar_subcarpeta("bandeja de salida")
+        self.__bandeja_entrada = self.__carpeta_raiz.agregar_subcarpeta("Bandeja de Entrada")
+        self.__bandeja_salida = self.__carpeta_raiz.agregar_subcarpeta("Bandeja de Salida")
 
     @property
     def carpeta_raiz(self):
@@ -35,3 +35,40 @@ class Usuario():
     @property
     def bandeja_salida(self):
         return self.__bandeja_salida
+    
+    def buscar_carpeta(self, nodo_actual, nombre_carpeta):
+        #va a buscar una carpeta en el árbol general según su nombre de forma recursiva
+        if nodo_actual is None:
+            return None
+        
+        if nodo_actual.nombre.lower() == nombre_carpeta.lower():
+            return nodo_actual
+        
+        #busca en el primer hijo
+        hijo_encontrado = self.buscar_carpeta(nodo_actual.hijo, nombre_carpeta)
+        if hijo_encontrado:
+            return hijo_encontrado
+        #busca en el siguiente hermano
+        return self.buscar_carpeta(nodo_actual.siguiente_hermano, nombre_carpeta)
+    
+    def mover_mensaje(self, mensaje_a_mover, nombre_origen, nombre_destino):
+        #función para mover mensaje de una carpeta a otra
+        
+        #primero buscamos las carpetas por su nombre dentro del árbol
+        carpeta_origen = self.buscar_carpeta(self.carpeta_raiz, nombre_origen)
+        carpeta_destino = self.buscar_carpeta(self.carpeta_raiz, nombre_destino)
+        
+        if not carpeta_origen:
+            print(f"Error: Carpeta de origen '{nombre_origen}' no encontrada.")
+            return False 
+        if not carpeta_destino:
+            print(f"Error: Carpeta de destino '{nombre_destino}' no encontrada.")
+            return False
+        
+        if carpeta_origen.eliminar_mensaje(mensaje_a_mover): #eliminamos el mensaje de la carpeta de origen
+            carpeta_destino.agregar_mensajes(mensaje_a_mover)
+            print(f"Mensaje movido exitosamente de '{nombre_origen}' a '{nombre_destino}'.")
+            return True
+        else:
+            print(f"Error: El mensaje no se encontró en la carpeta '{nombre_origen}.")
+            return False
