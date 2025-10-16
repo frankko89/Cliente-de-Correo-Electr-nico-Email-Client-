@@ -32,6 +32,14 @@ class Carpeta():
     def agregar_mensajes(self, mensaje):
         self.mensajes.append(mensaje)
         print (f"el mensaje se agrego a la carpeta {self.nombre}")
+    
+    def eliminar_mensaje(self, mensaje):
+        try:
+            self.mensajes.remove(mensaje)
+            return True
+        except ValueError:
+            #ValueError se utiliza cuando hay un error en la lógica de la llamada, en este caso, cuando se llama a un mensaje que no existe o que no se encontró en esa carpeta.
+            return False
 
     def agregar_subcarpeta(self , dato):
         nuevo_dato = Carpeta(dato)
@@ -47,7 +55,7 @@ class Carpeta():
 
             hijo_actual.__siguiente_hermano = nuevo_dato
             #esto lo que hace es mantener la rama para que se pueda a volver a enlazar un nodo nuevo iterativamente 
-            return nuevo_dato
+        return nuevo_dato
 
 
     def buscar_mensajes(self, criterio):
