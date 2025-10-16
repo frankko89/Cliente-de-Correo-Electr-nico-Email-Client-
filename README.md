@@ -49,10 +49,11 @@
 | Tarea / Módulo | Responsable(s) |
 | :--- | :--- |
 | Diseño de Clases y Arquitectura Inicial (UML) | Ambos |
-| Implementación del Árbol de Carpetas | En proceso |
+| Implementación del Árbol de Carpetas | franco villalva |
 | Desarrollo de la Interfaz de Usuario por Consola | Oriana Casas |
 | Lógica de Gestión de Correos (Enviar, Recibir, Mover) | Ambos |
 | sistema basica de Busqueda Usuario/Asunto | Ambos  |
+| sistema avanzado de busqueda (recurisva) por Usuario/Asunto | Oriana casas|
 | Documentación final y README.md | Franco Villalva |
 | Gestión del Proyecto en Trello | Ambos |
 
