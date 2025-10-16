@@ -59,5 +59,5 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Estructura
-1.  El proyecot esta horientado completamente a la POO (programacion orientada a objetos)
-2.  tambien usaremos arboles generales para armar la gestion de las carpetas
+1.  El proyecto está completamente enfocado en la POO (programacion orientada a objetos).
+2.  Tambien utilizamos arboles generales para armar la gestion de las carpetas.
