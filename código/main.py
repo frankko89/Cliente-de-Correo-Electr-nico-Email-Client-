@@ -18,7 +18,8 @@ def inicio():
     print("2. Revisar bandeja de entrada")
     print("3. Ver bandeja de salida")
     print("4. Buscar mensajes por asunto o usuario")
-    print("5. Cerrar sesión")
+    print("5. Ver estructuras de las carpetas") #agregamos una nueva seccion para poder ver la estructura del arbol
+    print("6. Cerra sesion")
     print("-------------------------")
     seleccion = input("Seleccione una opción: ")
     return seleccion
@@ -57,6 +58,18 @@ def segunda_opcion():
         print(f"Bienvenido, {nuevo_usuario.nombre_completo}!")
         print("-------------------------")
         return nuevo_usuario
+    
+def mostrar_carpetas(actual, nivel = 0):
+    if actual is not None:
+        indentacion = " " * nivel
+        #aca lo que se haces es que se muestre como seria una carpeta dentro de otra
+        print(f"{indentacion}|-- {actual.nombre} ({len(actual.mensajes)}) mensajes")
+        #y aca lo que se va a ver es una forma visual la estructura y lo que haces es que accede a cada carpeta creada y a la lista de o de los mensajes que tenga
+        mostrar_carpetas(actual.hijo, nivel + 1)
+        
+        mostrar_carpetas(actual.siguiente_hermano, nivel + 2)
+        #y por ultimo en estas ultimas 2 lineas de codigo lo que hacemos es llamar a los getter que definimos en la clase folder
+        #para poder ver que tiene cada adentro cada rama y si tiene algo se muestra y si no salta a la siguiente 
 
 def bandeja_entrada(usuario_logueado):
     print("BANDEJA DE ENTRADA")
@@ -128,13 +141,20 @@ def main():
                     print(f"Se encontraron {len(resultados_totales)} resultados:")
                     mostrar_lista_mensajes(resultados_totales)
                     
-
             elif seleccion == "5":
+                print("\nEstructura de Carpetas: ")
+            
+                mostrar_carpetas(usuario.carpeta_raiz)
+                #aca lo que hacemos es que cuando se ingrese la opcion 5 llame a la funcion mostrar_carpeta 
+                print("-------------------------")
+            
+            elif seleccion == "6":
                 print("Cerrando sesión...")
                 print("-------------------------")
                 sesion_iniciada = False
             
             else:
+
                 print("Opción no válida. Intente de nuevo.")
                 print("-------------------------")
 
