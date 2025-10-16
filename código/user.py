@@ -8,9 +8,14 @@ class Usuario():
         self.__apellido = apellido
         self.__correo = correo 
         self.__contrasenia = contrasenia
-        self.__bandeja_entrada = Carpeta("Bandeja de Entrada")
-        self.__bandeja_salida = Carpeta("Bandeja de Salida")
-            
+        self.__carpeta_raiz = Carpeta(f"carpetas de {self.nombre_completo}")
+        self.__bandeja_entrada = self.__carpeta_raiz.agregar_subcarpeta("bandeja de entrada")
+        self.__bandeja_salida = self.__carpeta_raiz.agregar_subcarpeta("bandeja de salida")
+
+    @property
+    def carpeta_raiz(self):
+        return self.__carpeta_raiz
+
     @property
     def correo(self):
         return self.__correo
