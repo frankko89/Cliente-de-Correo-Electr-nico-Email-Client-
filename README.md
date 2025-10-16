@@ -53,7 +53,8 @@
 | Desarrollo de la Interfaz de Usuario por Consola | Oriana Casas |
 | Lógica de Gestión de Correos (Enviar, Recibir, Mover) | Ambos |
 | sistema basica de Busqueda Usuario/Asunto | Ambos  |
-| sistema avanzado de busqueda (recurisva) por Usuario/Asunto | Oriana casas|
+| sistema avanzado de busqueda (recursivo) por Usuario/Asunto | Oriana Casas|
+| Funciones de Árboles Generales en las Subcarpetas | Franco Villalva |
 | Documentación final y README.md | Franco Villalva |
 | Gestión del Proyecto en Trello | Ambos |
 
