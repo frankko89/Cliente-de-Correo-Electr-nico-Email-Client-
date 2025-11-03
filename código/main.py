@@ -2,6 +2,7 @@ import email_client as ServidorCorreo
 from folder import Carpeta
 #import mail as Mensaje
 #import user as Usuario
+
 ServidorCorreo = ServidorCorreo.servidorCorreo()
 
 def menu_principal(hay_usuarios):
@@ -28,8 +29,9 @@ def inicio():
     print("INICIO")
     print("(1). Gestionar mensajes")
     print("(2). Gestionar carpetas")
-    print("(3). Buscador")
-    print("(4). Cerrar sesión")
+    print("(3). Crear filtro automatico") #creamos la opcion de crear los filtros 
+    print("(4). Buscador")
+    print("(5). Cerrar sesion")
     print("-------------------------")
     seleccion = input("Seleccione una opción: ")
     return seleccion
@@ -279,7 +281,52 @@ def mover_mensaje(usuario):
     
     usuario.mover_mensaje(mensaje_a_mover, nombre_origen, nombre_destino)
     print("-------------------------")
+
+def crear_filtro(usuario):
+    print(" Crear Nuevo Filtro Automático ")
+    print("El filtro moverá automáticamente los correos.")
+
+    print("¿Sobre qué campo quieres filtrar?" )
+    print("(1). Remitente (email exacto)" )
+    print("(2). Asunto (palabra clave)" )
+    criterio_opcion = input("Seleccione una opción: ")
+
+    if criterio_opcion == "1":
+        criterio = "remitente"
+        valor = input("Ingrese el correo del remitente: ")
+    elif criterio_opcion == "2":
+        criterio = "asunto"
+        valor = input("Ingrese la palabra a buscar: ")
+    else:
+        print("Error: Opcion no valida.")
+        print("Porfavor seleccione una opcion valida.")
+        return
+
+    #ahora vamos a pedirle al usuario que nos diga como se va a llamar la carpeta de destino
+    print("Estas son las carpetas disponible:")
+    mostrar_carpetas(usuario.carpeta_raiz)
+    destino = input("Ingrese el nombre de la carpeta de destino: ")
+
+    #validamos que exista la carpeta 
+    if not usuario.buscar_carpeta(usuario.carpeta_raiz , destino):
+        print(f"Error: La carpeta {destino} no existe. Por favor, creela primero.")
+        return
     
+    regla = {
+        "criterio": criterio,
+        "valor": valor.lower(),
+        "accion": "mover",
+        "destino": destino
+    }
+    
+    usuario.agregar_filtro(regla)
+    """
+     Una vez echa la validacion, creamos el diccionario como tal y utilizamos el metodo que definimos en la clase user y lo agregamos en la lista
+    """
+
+
+
+
 def main():
     sesion_iniciada = False
     usuario = None
@@ -316,6 +363,9 @@ def main():
                 menu_gestionar_carpetas(usuario)
 
             elif seleccion == "3":
+                crear_filtro(usuario)
+
+            elif seleccion == "4":
                 print("Buscador de mensajes")
                 criterio = input("Ingrese el asunto o usuario para buscar: ")
                 resultados_entrada = usuario.bandeja_entrada.buscar_mensajes(criterio)
@@ -329,7 +379,9 @@ def main():
                     print(f"Se encontraron {len(resultados_totales)} resultados:")
                     mostrar_lista_mensajes(resultados_totales)
 
-            elif seleccion == "4":
+
+            
+            elif seleccion == "5":
                 print("Cerrando sesión...")
                 print("-------------------------")
                 sesion_iniciada = False
