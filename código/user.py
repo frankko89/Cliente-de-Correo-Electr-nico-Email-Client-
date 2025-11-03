@@ -12,6 +12,12 @@ class Usuario():
         self.__bandeja_entrada = self.__carpeta_raiz.agregar_subcarpeta("Bandeja de Entrada")
         self.__bandeja_salida = self.__carpeta_raiz.agregar_subcarpeta("Bandeja de Salida")
         self.__importantes = []
+        self.__filtros = []
+    
+    #creamos los metedos para obtener los filtros creados por el usuario en el caso que sea necesario 
+    @property
+    def filtros(self):
+        return self.__filtros
 
     @property
     def carpeta_raiz(self):
@@ -40,6 +46,10 @@ class Usuario():
     @property
     def importantes(self):
         return self.__importantes
+    
+    def agregar_filtro(self, regla_diccionario):
+        self.__filtros.append(regla_diccionario)
+        print( f"Se agrego exitosamente el filtro para el criterio {regla_diccionario['criterio']}.")
         
     def agregar_importante(self, mensaje):
         if mensaje not in self.__importantes:
