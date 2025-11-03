@@ -3,24 +3,32 @@ import email_client as ServidorCorreo
 #import user as Usuario
 ServidorCorreo = ServidorCorreo.servidorCorreo()
 
-def menu_principal():
+def menu_principal(hay_usuarios):
     print("Bienvenido al Cliente de Correo Electrónico")
-    print("1. Iniciar sesión")
-    print("2. Registrarse")
-    print("3. Salir")
+    opciones = {}
+    
+    if hay_usuarios:    
+        print("(1). Iniciar sesión")
+        print("(2). Registrarse")
+        print("(3). Salir")
+        opciones = {"1": "login", "2": "register", "3": "exit"}
+    
+    else:
+        print("(1). Registrarse")
+        print("(2). Salir")
+        opciones = {"1": "register", "2": "exit"}
+        
     print("-------------------------")
-    opcion = input("Seleccione una opción: ")
-    return opcion
+    seleccion = input("Seleccione una opción: ")
+    #devuelve la acción correspondiente al número, o "inválida" si no existe dicha opción.
+    return opciones.get(seleccion, "invalida")
 
 def inicio():
     print("INICIO")
-    print("1. Enviar correo")
-    print("2. Revisar bandeja de entrada")
-    print("3. Ver bandeja de salida")
-    print("4. Buscar mensajes por asunto o usuario")
-    print("5. Ver estructuras de las carpetas") #agregamos una nueva seccion para poder ver la estructura del arbol
-    print("6. Mover un mensaje a una carpeta.") #nueva función para mover mensajes de una carpeta a otra
-    print("7. Cerrar sesion")
+    print("(1). Gestionar mensajes")
+    print("(2). Gestionar carpetas")
+    print("(3). Buscador")
+    print("(4). Cerrar sesión")
     print("-------------------------")
     seleccion = input("Seleccione una opción: ")
     return seleccion
@@ -43,8 +51,8 @@ def primera_opcion():
 def segunda_opcion():
     print("Registrarse")
     print("-------------------------")
-    nuevo_nombre = input("Ingrese su nombre: ")
-    nuevo_apellido = input("Ingrese su apellido: ")
+    nuevo_nombre = input("Ingrese su nombre: ").title()
+    nuevo_apellido = input("Ingrese su apellido: ").title()
     nuevo_correo = input("Ingrese su correo electrónico: ")
     nueva_contrasenia = input("Ingrese su contraseña: ")
     print("-------------------------")
@@ -55,7 +63,6 @@ def segunda_opcion():
     else:
         print("Registro exitoso. Iniciando sesión...")
         print("-------------------------")
-        ServidorCorreo.iniciar_sesion(nuevo_correo, nueva_contrasenia)
         print(f"Bienvenido, {nuevo_usuario.nombre_completo}!")
         print("-------------------------")
         return nuevo_usuario
@@ -66,19 +73,81 @@ def mostrar_carpetas(actual, nivel = 0):
         #aca lo que se haces es que se muestre como seria una carpeta dentro de otra
         print(f"{indentacion}|-- {actual.nombre} ({len(actual.mensajes)}) mensajes")
         #y aca lo que se va a ver es una forma visual la estructura y lo que haces es que accede a cada carpeta creada y a la lista de o de los mensajes que tenga
-        mostrar_carpetas(actual.hijo, nivel + 1)
-        
-        mostrar_carpetas(actual.siguiente_hermano, nivel + 2)
+        mostrar_carpetas(actual.hijo, nivel + 1)     
+        mostrar_carpetas(actual.siguiente_hermano, nivel)
         #y por ultimo en estas ultimas 2 lineas de codigo lo que hacemos es llamar a los getter que definimos en la clase folder
         #para poder ver que tiene cada adentro cada rama y si tiene algo se muestra y si no salta a la siguiente 
 
-def bandeja_entrada(usuario_logueado):
-    print("BANDEJA DE ENTRADA")
-    mostrar_lista_mensajes(usuario_logueado.bandeja_entrada.mensajes)
+def menu_gestionar_mensajes(usuario):
+    while True:
+        print("GESTIÓN DE MENSAJES")
+        print("(1). Enviar correo")
+        print("(2). Revisar bandeja de entrada")
+        print("(3). Revisar bandeja de salida")
+        print("(4). Mover un mensaje a una carpeta")
+        print("(5). Volver atrás")
+        print("-------------------------")
+        seleccion = input("Seleccione una opción: ")
 
-def bandeja_salida(usuario_logueado):
-    print("BANDEJA DE SALIDA")
-    mostrar_lista_mensajes(usuario_logueado.bandeja_salida.mensajes)
+        if seleccion == "1":
+            print("Enviar correo")
+            print("-------------------------")
+            remitente_mail = usuario.correo
+            destinatario_mail = input("Ingrese el correo electrónico del destinatario: ")
+            asunto = input("Ingrese el asunto del correo: ")
+            cuerpo = input("Ingrese el cuerpo del correo: ")
+            ServidorCorreo.enviar_mensaje(remitente_mail, destinatario_mail, asunto, cuerpo)
+        
+        elif seleccion == "2":
+            menu_revisar_bandeja(usuario, usuario.bandeja_entrada, "Bandeja de Entrada")
+        
+        elif seleccion == "3":
+            menu_revisar_bandeja(usuario, usuario.bandeja_salida, "Bandeja de Salida")
+        
+        elif seleccion == "4":
+            mover_mensaje(usuario) # Esta función ya existía y se reutiliza
+        
+        elif seleccion == "5":
+            break 
+        
+        else:
+            print("Opción no válida. Intente de nuevo.")
+
+def menu_gestionar_carpetas(usuario):
+    while True:
+        print("GESTIÓN DE CARPETAS")
+        print("(1). Ver estructuras de las carpetas")
+        print("(2). Crear carpeta")
+        print("(3). Revisar mensajes de una carpeta") 
+        print("(4). Volver atrás") 
+        print("-------------------------")
+        seleccion = input("Seleccione una opción: ")
+
+        if seleccion == "1":
+            print("\n--Estructura de Carpetas--")
+            mostrar_carpetas(usuario.carpeta_raiz)
+            print("-------------------------")
+        
+        elif seleccion == "2":
+            print("\n--Nueva Carpeta--")
+            nombre = input("Ingrese el nombre de su nueva carpeta: ")
+            usuario.carpeta_raiz.agregar_subcarpeta(nombre)
+
+        elif seleccion == "3":
+            print("\n--Revisar Carpeta--")
+            nombre_carpeta = input("Ingrese el nombre de la carpeta a revisar: ")
+            carpeta_encontrada = usuario.buscar_carpeta(usuario.carpeta_raiz, nombre_carpeta)
+            if carpeta_encontrada:
+                menu_revisar_bandeja(usuario, carpeta_encontrada, carpeta_encontrada.nombre)
+            else:
+                print(f"Error: No se encontró la carpeta llamada '{nombre_carpeta}'.")
+                print("-------------------------")
+        
+        elif seleccion == "4": 
+            break 
+        
+        else:
+            print("Opción no válida. Intente de nuevo.")
 
 def mostrar_lista_mensajes(lista_de_mensajes):
     if not lista_de_mensajes:
@@ -89,6 +158,72 @@ def mostrar_lista_mensajes(lista_de_mensajes):
     for i, m in enumerate(lista_de_mensajes):
         print(f"{i+1}. De: {m.remitente.nombre_completo} | Asunto: {m.asunto} | Fecha: {m.fecha}")
     print("-------------------------")
+
+def menu_revisar_bandeja(usuario, carpeta, nombre_carpeta):
+    while True:
+        print(f"\nREVISANDO: {nombre_carpeta.upper()}")
+        lista_de_mensajes = carpeta.mensajes
+        
+        if not lista_de_mensajes:
+            print("No se encontraron mensajes.")
+            print("-------------------------")
+            break # si no hay mensajes, vuelve al menú anterior
+        
+        # muestra la lista de mensajes
+        mostrar_lista_mensajes(lista_de_mensajes)
+        
+        print("(1). Seleccionar mensaje (por número)")
+        print("(2). Volver atrás")
+        print("-------------------------")
+        seleccion = input("Seleccione una opción: ")
+
+        if seleccion == "1":
+            try:
+                indice = int(input("Ingrese el NÚMERO del mensaje: ")) - 1
+                if 0 <= indice < len(lista_de_mensajes):
+                    mensaje_seleccionado = lista_de_mensajes[indice]
+                    menu_opciones_mensaje(usuario, mensaje_seleccionado)
+                else:
+                    print("Número de mensaje fuera de rango.")
+            except ValueError:
+                print("Entrada no válida. Debe ser un número.")
+        
+        elif seleccion == "2":
+            break 
+        
+        else:
+            print("Opción no válida.")
+
+def menu_opciones_mensaje(usuario, mensaje):
+    while True:
+        print(f"Opciones para mensaje: '{mensaje.asunto}'")
+        
+        print("(1). Marcar como importante")
+        print("(2). Leer mensaje (y marcar como leído)")
+        print("(3). Volver atrás")
+        print("-------------------------")
+        seleccion = input("Seleccione una opción: ")
+
+        if seleccion == "1":
+            print("--- (Mensaje marcado como importante [PRUEBA]) ---")
+        
+        elif seleccion == "2":
+            print("--- (Mensaje marcado como leído [PRUEBA]) ---")
+            
+            # muestra el contenido completo del mensaje
+            print(f"\n--- LEYENDO MENSAJE ---")
+            print(f"De: {mensaje.remitente.nombre_completo} <{mensaje.remitente.correo}>")
+            print(f"Fecha: {mensaje.fecha}")
+            print(f"Asunto: {mensaje.asunto}")
+            print("-------------------------")
+            print(f"Cuerpo:\n{mensaje.cuerpo}")
+            print("-------------------------")
+        
+        elif seleccion == "3":
+            break 
+        
+        else:
+            print("Opción no válida.")
 
 def mover_mensaje(usuario):
     #logica para que el usuario mueva mensaje entre dos carpetas existentes en su buzón.
@@ -127,45 +262,41 @@ def mover_mensaje(usuario):
     
 def main():
     sesion_iniciada = False
+    usuario = None
     
     while True:
         if not sesion_iniciada:
-            opcion = menu_principal()
-            if opcion == "1":
+            #revisamos si la lista de usuarios está vacía
+            hay_usuarios_registrados = len(ServidorCorreo.usuarios) > 0
+            accion = menu_principal(hay_usuarios_registrados) # y la respuesta a la duda se la pasamos al menú principal para saber qué mostrarle al usuario.
+            
+            if accion == "login":
                 usuario = primera_opcion()
                 if usuario:
                     sesion_iniciada = True
-            elif opcion == "2":
+            elif accion == "register":
                 usuario = segunda_opcion()
                 if usuario:
                     sesion_iniciada = True
-            elif opcion == "3":
+            elif accion == "exit":
                 print("Saliendo...")
                 print("-------------------------")
                 break
-            else:
+            else: #"Invalida"
                 print("Opción no válida. Intente de nuevo.")
                 print("-------------------------")
             
         else:
             seleccion = inicio()
+            
             if seleccion == "1":
-                print("Enviar correo")
-                print("-------------------------")
-                remitente_mail = usuario.correo
-                destinatario_mail = input("Ingrese el correo electrónico del destinatario: ")
-                asunto = input("Ingrese el asunto del correo: ")
-                cuerpo = input("Ingrese el cuerpo del correo: ")
-                ServidorCorreo.enviar_mensaje(remitente_mail, destinatario_mail, asunto, cuerpo)
-
+                menu_gestionar_mensajes(usuario)
+            
             elif seleccion == "2":
-                bandeja_entrada(usuario)
+                menu_gestionar_carpetas(usuario)
 
             elif seleccion == "3":
-                bandeja_salida(usuario)
-
-            elif seleccion == "4":
-                print("Buscar mensajes")
+                print("Buscador de mensajes")
                 criterio = input("Ingrese el asunto o usuario para buscar: ")
                 resultados_entrada = usuario.bandeja_entrada.buscar_mensajes(criterio)
                 resultados_salida = usuario.bandeja_salida.buscar_mensajes(criterio)
@@ -173,24 +304,16 @@ def main():
                 
                 if not resultados_totales:
                     print("No se encontraron mensajes que coincidan con la búsqueda.")
+                    
                 else:
                     print(f"Se encontraron {len(resultados_totales)} resultados:")
                     mostrar_lista_mensajes(resultados_totales)
-                    
-            elif seleccion == "5":
-                print("\nEstructura de Carpetas: ")
-            
-                mostrar_carpetas(usuario.carpeta_raiz)
-                #aca lo que hacemos es que cuando se ingrese la opcion 5 llame a la funcion mostrar_carpeta 
-                print("-------------------------")
-            
-            elif seleccion == "6":
-                mover_mensaje(usuario)
-            
-            elif seleccion == "7":
+
+            elif seleccion == "4":
                 print("Cerrando sesión...")
                 print("-------------------------")
                 sesion_iniciada = False
+                usuario = None
             
             else:
                 print("Opción no válida. Intente de nuevo.")

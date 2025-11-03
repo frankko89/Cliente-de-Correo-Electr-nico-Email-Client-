@@ -31,7 +31,6 @@ class Carpeta():
 # aca esta creada la busqueda recursiva para remitente o asunto
     def agregar_mensajes(self, mensaje):
         self.mensajes.append(mensaje)
-        print (f"el mensaje se agrego a la carpeta {self.nombre}")
     
     def eliminar_mensaje(self, mensaje):
         try:
@@ -43,8 +42,7 @@ class Carpeta():
 
     def agregar_subcarpeta(self , dato):
         nuevo_dato = Carpeta(dato)
-        """ aca lo que hacemos es a esta nueva variable le decimos o asignmoss toda la estructura de la clase y dato es el valor que va a tener el nodo        
-        """
+        #aca lo que hacemos es que a esta nueva variable le decimos o asignamos toda la estructura de la clase y dato es el valor que va a tener el nodo        
         if self.__primer_hijo is None:
             self.__primer_hijo = nuevo_dato
         else:
