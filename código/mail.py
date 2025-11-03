@@ -6,6 +6,7 @@ class Mensaje():
         self.__cuerpo = cuerpo
         self.__fecha = fecha
         self.__leido = False
+        self.__importante = False
         
     @property
     def remitente(self):
@@ -31,6 +32,10 @@ class Mensaje():
     def leido(self):
         return self.__leido
     
+    @property
+    def importante(self):
+        return self.__importante
+    
     def mostrar_mensaje(self):
         print(f"De: {self.remitente.nombre_completo} <{self.remitente.correo}>")
         print(f"Para: {self.destinatario.nombre_completo} <{self.destinatario.correo}>")
@@ -41,3 +46,6 @@ class Mensaje():
     def marcar_como_leido(self):
         self.leido = True 
         print("El mensaje ha sido marcado como leído.")
+    
+    def marcar_importante(self, es_importante):
+        self.__importante = es_importante
