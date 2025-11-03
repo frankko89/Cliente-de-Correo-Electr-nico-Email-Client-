@@ -54,10 +54,17 @@ class servidorCorreo():
         
         remitente = self.usuarios[remitente_mail]
         destinatario = self.usuarios[destinatario_mail]
-    #aca si no tenemos ningun problema con los correos se los asignamos a las variables de la clase Mensaje para poder crear el modelo como tal
-        nuevo_mensaje = Mensaje(remitente, destinatario, asunto, cuerpo, dt.date.today())
-        remitente.bandeja_salida.agregar_mensajes(nuevo_mensaje)
-        destinatario.bandeja_entrada.agregar_mensajes(nuevo_mensaje) 
+        #aca si no tenemos ningun problema con los correos se los asignamos a las variables de la clase Mensaje para poder crear el modelo como tal
+        # mensaje en la bandeja del remitente
+        mensaje_salida = Mensaje(remitente, destinatario, asunto, cuerpo, dt.date.today())
+
+        # copia separada para el destinatario
+        mensaje_entrada = Mensaje(remitente, destinatario, asunto, cuerpo, dt.date.today())
+
+        #lo marcamos como dos distintos, para que las configuraciones que cada usuario haga al mensaje que recibió/escribió no se vea afectado en la cuenta del otro.
+        remitente.bandeja_salida.agregar_mensajes(mensaje_salida)
+        destinatario.bandeja_entrada.agregar_mensajes(mensaje_entrada)
+ 
         print("Mensaje enviado exitosamente.")  
         print("-------------------------")
         return True

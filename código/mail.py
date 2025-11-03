@@ -44,8 +44,7 @@ class Mensaje():
         print(f"Cuerpo: {self.cuerpo}")
         
     def marcar_como_leido(self):
-        self.leido = True 
-        print("El mensaje ha sido marcado como leído.")
+        self.__leido = True 
     
     def marcar_importante(self, es_importante):
         self.__importante = es_importante
