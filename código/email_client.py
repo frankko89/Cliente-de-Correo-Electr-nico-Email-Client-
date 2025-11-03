@@ -64,7 +64,42 @@ class servidorCorreo():
         #lo marcamos como dos distintos, para que las configuraciones que cada usuario haga al mensaje que recibió/escribió no se vea afectado en la cuenta del otro.
         remitente.bandeja_salida.agregar_mensajes(mensaje_salida)
         destinatario.bandeja_entrada.agregar_mensajes(mensaje_entrada)
- 
+
+        #ahora hacemos las modificaciones en mail para que se use en cada usuario diferente
+        mensaje_filtrado = False
+
+        for regla in destinatario.filtros:
+             
+            coincidencia = False
+            if regla["criterio"] == "remitente":
+                  if mensaje_salida.remitente.correo.lower() == regla["valor"]:
+                       coincidencia = True
+            
+
+            elif regla["criterio"] == "asunto":
+                 if regla["valor"] in mensaje_entrada.asunto.lower():
+                     coincidencia = True
+
+            #ahora se ejecutario la parte donde si hubo coincidencias
+            if coincidencia:
+                print(f"Se encontro la carpeta indicada: moviendo a {regla["destino"]}...")
+
+                carpeta_destino = destinatario.buscar_carpeta(destinatario.carpeta_raiz, regla["destino"])
+                
+                if carpeta_destino:
+                    # Si encontramos la carpeta, agregamos el mensaje
+                    carpeta_destino.agregar_mensajes(mensaje_entrada)
+                    mensaje_filtrado = True # Marcamos que ya se filtró
+                    break # Salimos del bucle, un mensaje solo se filtra una vez
+                else:
+                    # Si la carpeta destino no existe se muestre el mensaje de aviso
+                    print(f"Advertencia: La carpeta de filtro '{regla['destino']}' no se encontró.")
+                
+
+                #si non se encontro ninguna carpeta que coincida o no se movio a ninguna directamente se manda a la carpeta de mensajes 
+                if not mensaje_filtrado:
+                    destinatario.bandeja_entrada.agregar_mensajes(mensaje_entrada)
+       
         print("Mensaje enviado exitosamente.")  
         print("-------------------------")
         return True

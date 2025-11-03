@@ -51,7 +51,7 @@ class Carpeta():
             while hijo_actual.siguiente_hermano  is not None:
                 hijo_actual = hijo_actual.siguiente_hermano
 
-            hijo_actual.__siguiente_hermano = nuevo_dato
+            hijo_actual.siguiente_hermano = nuevo_dato
             #esto lo que hace es mantener la rama para que se pueda a volver a enlazar un nodo nuevo iterativamente 
         return nuevo_dato
 
