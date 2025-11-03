@@ -165,9 +165,10 @@ def mostrar_lista_mensajes(lista_de_mensajes):
         print("No se encontraron mensajes.")
         print("-------------------------")
         return
-
+    
     for i, m in enumerate(lista_de_mensajes):
-        print(f"{i+1}. De: {m.remitente.nombre_completo} | Asunto: {m.asunto} | Fecha: {m.fecha}")
+        estado = "[NUEVO] " if not m.leido else " " * 8
+        print(f"{i+1}. {estado}De: {m.remitente.nombre_completo} | Asunto: {m.asunto} | Fecha: {m.fecha}")
     print("-------------------------")
 
 def menu_revisar_bandeja(usuario, carpeta, nombre_carpeta):
@@ -182,7 +183,6 @@ def menu_revisar_bandeja(usuario, carpeta, nombre_carpeta):
         
         # muestra la lista de mensajes
         mostrar_lista_mensajes(lista_de_mensajes)
-        
         print("(1). Seleccionar mensaje (por número)")
         print("(2). Volver atrás")
         print("-------------------------")
@@ -228,8 +228,6 @@ def menu_opciones_mensaje(usuario, mensaje):
                 print("--¡Mensaje marcado como IMPORTANTE!--")
         
         elif seleccion == "2":
-            print("--(Mensaje marcado como leído [PRUEBA])--")
-            
             # muestra el contenido completo del mensaje
             print(f"\n--- LEYENDO MENSAJE ---")
             print(f"De: {mensaje.remitente.nombre_completo} <{mensaje.remitente.correo}>")
@@ -238,6 +236,8 @@ def menu_opciones_mensaje(usuario, mensaje):
             print("-------------------------")
             print(f"Cuerpo:\n{mensaje.cuerpo}")
             print("-------------------------")
+            mensaje.marcar_como_leido()
+            print("El mensaje ha sido marcado como leído.")
         
         elif seleccion == "3":
             break 
