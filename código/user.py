@@ -11,6 +11,7 @@ class Usuario():
         self.__carpeta_raiz = Carpeta(f"carpetas de {self.nombre_completo}")
         self.__bandeja_entrada = self.__carpeta_raiz.agregar_subcarpeta("Bandeja de Entrada")
         self.__bandeja_salida = self.__carpeta_raiz.agregar_subcarpeta("Bandeja de Salida")
+        self.__importantes = []
 
     @property
     def carpeta_raiz(self):
@@ -35,6 +36,18 @@ class Usuario():
     @property
     def bandeja_salida(self):
         return self.__bandeja_salida
+    
+    @property
+    def importantes(self):
+        return self.__importantes
+        
+    def agregar_importante(self, mensaje):
+        if mensaje not in self.__importantes:
+            self.__importantes.append(mensaje)
+            
+    def quitar_importante(self, mensaje):
+        if mensaje in self.__importantes:
+            self.__importantes.remove(mensaje)
     
     def buscar_carpeta(self, nodo_actual, nombre_carpeta):
         #va a buscar una carpeta en el árbol general según su nombre de forma recursiva

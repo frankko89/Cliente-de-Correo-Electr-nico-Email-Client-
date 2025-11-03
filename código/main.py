@@ -1,4 +1,5 @@
 import email_client as ServidorCorreo
+from folder import Carpeta
 #import mail as Mensaje
 #import user as Usuario
 ServidorCorreo = ServidorCorreo.servidorCorreo()
@@ -84,8 +85,9 @@ def menu_gestionar_mensajes(usuario):
         print("(1). Enviar correo")
         print("(2). Revisar bandeja de entrada")
         print("(3). Revisar bandeja de salida")
-        print("(4). Mover un mensaje a una carpeta")
-        print("(5). Volver atrás")
+        print("(4). Ver mensajes importantes")
+        print("(5). Mover un mensaje a una carpeta")
+        print("(6). Volver atrás")
         print("-------------------------")
         seleccion = input("Seleccione una opción: ")
 
@@ -105,9 +107,18 @@ def menu_gestionar_mensajes(usuario):
             menu_revisar_bandeja(usuario, usuario.bandeja_salida, "Bandeja de Salida")
         
         elif seleccion == "4":
-            mover_mensaje(usuario) # Esta función ya existía y se reutiliza
+            print("Accediendo a la Cola de Prioridades...")
+            carpeta_virtual_importantes = Carpeta("Mensajes Importantes")
+            
+            for msg in usuario.importantes:
+                carpeta_virtual_importantes.agregar_mensajes(msg)
+            
+            menu_revisar_bandeja(usuario, carpeta_virtual_importantes, "Mensajes Importantes")
         
         elif seleccion == "5":
+            mover_mensaje(usuario) 
+        
+        elif seleccion == "6":
             break 
         
         else:
@@ -196,19 +207,28 @@ def menu_revisar_bandeja(usuario, carpeta, nombre_carpeta):
 
 def menu_opciones_mensaje(usuario, mensaje):
     while True:
-        print(f"Opciones para mensaje: '{mensaje.asunto}'")
+        estado_importante = "¡IMPORTANTE!" if mensaje.importante else "Normal"
+        print(f"Opciones para mensaje: '{mensaje.asunto}' (Prioridad: {estado_importante})")
+        opcion_importante = "Desmarcar como importante" if mensaje.importante else "Marcar como importante"
         
-        print("(1). Marcar como importante")
+        print(f"(1). {opcion_importante}")
         print("(2). Leer mensaje (y marcar como leído)")
         print("(3). Volver atrás")
         print("-------------------------")
         seleccion = input("Seleccione una opción: ")
 
         if seleccion == "1":
-            print("--- (Mensaje marcado como importante [PRUEBA]) ---")
+            if mensaje.importante:
+                mensaje.marcar_importante(False) # lo desmarca en el objeto
+                usuario.quitar_importante(mensaje) # lo quita de la lista del usuario
+                print("--Mensaje desmarcado como importante--")
+            else:
+                mensaje.marcar_importante(True) # lo marca en el objeto
+                usuario.agregar_importante(mensaje) # lo agrega a la lista del usuario
+                print("--¡Mensaje marcado como IMPORTANTE!--")
         
         elif seleccion == "2":
-            print("--- (Mensaje marcado como leído [PRUEBA]) ---")
+            print("--(Mensaje marcado como leído [PRUEBA])--")
             
             # muestra el contenido completo del mensaje
             print(f"\n--- LEYENDO MENSAJE ---")
