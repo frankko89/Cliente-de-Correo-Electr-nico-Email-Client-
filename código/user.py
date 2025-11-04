@@ -1,6 +1,7 @@
 import datetime as dt
 from mail import Mensaje
 from folder import Carpeta
+import heapq
 
 class Usuario():
     def __init__(self, nombre, apellido, correo, contrasenia):
@@ -11,7 +12,7 @@ class Usuario():
         self.__carpeta_raiz = Carpeta(f"carpetas de {self.nombre_completo}")
         self.__bandeja_entrada = self.__carpeta_raiz.agregar_subcarpeta("Bandeja de Entrada")
         self.__bandeja_salida = self.__carpeta_raiz.agregar_subcarpeta("Bandeja de Salida")
-        self.__importantes = []
+        self.__cola_de_prioridad = []
         self.__filtros = []
     
     #creamos los metedos para obtener los filtros creados por el usuario en el caso que sea necesario 
@@ -44,8 +45,8 @@ class Usuario():
         return self.__bandeja_salida
     
     @property
-    def importantes(self):
-        return self.__importantes
+    def cola_de_prioridad(self):
+        return self.__cola_de_prioridad
     
     def agregar_filtro(self, regla_diccionario):
         self.__filtros.append(regla_diccionario)
@@ -58,6 +59,17 @@ class Usuario():
     def quitar_importante(self, mensaje):
         if mensaje in self.__importantes:
             self.__importantes.remove(mensaje)
+    
+    def agregar_a_cola(self, mensaje):
+        # usamos heappush para agregar a la cola manteniendo el orden
+        if mensaje not in self.__cola_de_prioridad:
+            heapq.heappush(self.__cola_de_prioridad, mensaje)
+            
+    def quitar_de_cola(self, mensaje):
+        if mensaje in self.__cola_de_prioridad:
+            self.__cola_de_prioridad.remove(mensaje)
+            # re-ordenamos la lista para que vuelva a ser un heap válido
+            heapq.heapify(self.__cola_de_prioridad)
     
     def buscar_carpeta(self, nodo_actual, nombre_carpeta):
         #va a buscar una carpeta en el árbol general según su nombre de forma recursiva
