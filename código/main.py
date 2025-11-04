@@ -1,5 +1,6 @@
 import email_client as ServidorCorreo
 from folder import Carpeta
+import heapq
 #import mail as Mensaje
 #import user as Usuario
 
@@ -110,12 +111,26 @@ def menu_gestionar_mensajes(usuario):
         
         elif seleccion == "4":
             print("Accediendo a la Cola de Prioridades...")
-            carpeta_virtual_importantes = Carpeta("Mensajes Importantes")
+            carpeta_virtual_importantes = Carpeta("Mensajes Importantes (Priorizados)")
             
-            for msg in usuario.importantes:
+            # no podemos iterar 'usuario.cola_de_prioridad' directamente, porque eso no garantiza el orden.
+            # tenemos que sacar los elementos usando heappop.
+            
+            # hacemos una copia para no destruir la cola original
+            heap_copia = list(usuario.cola_de_prioridad)
+            
+            # creamos una lista ordenada sacando del heap
+            mensajes_ordenados = []
+            while heap_copia:
+                # heappop SIEMPRE saca el elemento más pequeño (prioridad 1)
+                msg = heapq.heappop(heap_copia)
+                mensajes_ordenados.append(msg)
+            
+            # agregamos los mensajes (ya ordenados) a la carpeta virtual
+            for msg in mensajes_ordenados:
                 carpeta_virtual_importantes.agregar_mensajes(msg)
             
-            menu_revisar_bandeja(usuario, carpeta_virtual_importantes, "Mensajes Importantes")
+            menu_revisar_bandeja(usuario, carpeta_virtual_importantes, "Mensajes Importantes (Priorizados)")
         
         elif seleccion == "5":
             mover_mensaje(usuario) 
@@ -209,25 +224,36 @@ def menu_revisar_bandeja(usuario, carpeta, nombre_carpeta):
 
 def menu_opciones_mensaje(usuario, mensaje):
     while True:
-        estado_importante = "¡IMPORTANTE!" if mensaje.importante else "Normal"
-        print(f"Opciones para mensaje: '{mensaje.asunto}' (Prioridad: {estado_importante})")
-        opcion_importante = "Desmarcar como importante" if mensaje.importante else "Marcar como importante"
+        prioridad_actual = mensaje.prioridad
+        estado_importante = f"Prioridad: {prioridad_actual}"
         
-        print(f"(1). {opcion_importante}")
+        print(f"Opciones para mensaje: '{mensaje.asunto}' ({estado_importante})")
+        
+        print("(1). Establecer Prioridad (1=Urgente, 2=Importante, 3=Normal)")
         print("(2). Leer mensaje (y marcar como leído)")
         print("(3). Volver atrás")
         print("-------------------------")
         seleccion = input("Seleccione una opción: ")
 
         if seleccion == "1":
-            if mensaje.importante:
-                mensaje.marcar_importante(False) # lo desmarca en el objeto
-                usuario.quitar_importante(mensaje) # lo quita de la lista del usuario
-                print("--Mensaje desmarcado como importante--")
-            else:
-                mensaje.marcar_importante(True) # lo marca en el objeto
-                usuario.agregar_importante(mensaje) # lo agrega a la lista del usuario
-                print("--¡Mensaje marcado como IMPORTANTE!--")
+            try:
+                nivel = int(input("Ingrese el nivel de prioridad (1, 2, o 3): "))
+                
+                if nivel in [1, 2]:
+                    mensaje.establecer_prioridad(nivel) 
+                    usuario.agregar_a_cola(mensaje) 
+                    print(f"--¡Mensaje marcado con PRIORIDAD {nivel}!--")
+                
+                elif nivel == 3:
+                    mensaje.establecer_prioridad(3) 
+                    usuario.quitar_de_cola(mensaje) 
+                    print("--Mensaje devuelto a prioridad Normal--")
+                
+                else:
+                    print("Nivel no válido. Debe ser 1, 2 o 3.")
+            
+            except ValueError:
+                print("Entrada no válida. Debe ser un número.")
         
         elif seleccion == "2":
             # muestra el contenido completo del mensaje

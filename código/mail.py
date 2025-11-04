@@ -6,7 +6,7 @@ class Mensaje():
         self.__cuerpo = cuerpo
         self.__fecha = fecha
         self.__leido = False
-        self.__importante = False
+        self.__prioridad = 3
         
     @property
     def remitente(self):
@@ -33,8 +33,8 @@ class Mensaje():
         return self.__leido
     
     @property
-    def importante(self):
-        return self.__importante
+    def prioridad(self):
+        return self.__prioridad
     
     def mostrar_mensaje(self):
         print(f"De: {self.remitente.nombre_completo} <{self.remitente.correo}>")
@@ -46,5 +46,9 @@ class Mensaje():
     def marcar_como_leido(self):
         self.__leido = True 
     
-    def marcar_importante(self, es_importante):
-        self.__importante = es_importante
+    def establecer_prioridad(self, nivel_prioridad):
+        # Asignamos el nuevo nivel
+        self.__prioridad = nivel_prioridad
+    
+    def __lt__(self, other):
+        return self.__prioridad < other.prioridad
