@@ -1,65 +1,71 @@
-## Cliente de Correo Electrónico (EmailClient)
- Este proyecto, implementado en Python, es un sistema orientado a objetos que modela un cliente de correo electrónico. Su objetivo es gestionar usuarios, mensajes, carpetas, filtros y operaciones comunes de un  entorno de email.
+#  Cliente de Correo Electrónico (EmailClient)
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## Materia: Estructura de Datos
-## Profesor: Dr. Diego Agustín Ambrossio (Comisión N° 2)
-## Participantes:
- 1. Franco Villalva
- 2. Oriana Casas
- 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-##  Instrucciones de Uso
+> Sistema de gestión de correos implementado en Python con enfoque en Estructuras de Datos avanzadas.
 
-1.  **Requisitos del Sistema**
+Este proyecto simula un cliente de correo electrónico completo (backend logic), permitiendo la gestión de usuarios, autenticación, enrutamiento de mensajes a través de dominios y organización jerárquica de carpetas.
 
-    Es necesario tener instalado **Python 3.13.7** o una versión superior. Podés verificar tu versión con el comando `python --version`.
+---
 
-2.  **Instalación**
+##  Información del Proyecto
 
-    Primero, cloná el repositorio en tu máquina local ejecutando el siguiente comando en tu terminal:
+* **Materia:** Estructura de Datos
+* **Profesor:** Dr. Diego Agustín Ambrossio (Comisión N° 2)
+* **Estado:** Finalizado / Testeado
 
-    ```bash
-    git clone https://github.com/frankko89/Cliente-de-Correo-Electr-nico-Email-Client-.git
-    ```
+###  Equipo de Desarrollo
 
-    Una vez clonado, navegá hasta la carpeta del proyecto:
-
-    ```bash
-    cd Cliente-de-Correo-Electrnico-Email-Client
-    ```
-    
-3.  **Ejecución**
-
-    Para iniciar el cliente de correo, ejecutá el archivo principal del proyecto:
-
-    ```bash
-    python código/main.py
-    ```
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-## Trello
- en este link van a poder ver el avance del proyecto de una forma mas secuencial
-## link: https://trello.com/b/twW52Da4/proyecto-de-correos
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-### Distribución de Tareas
-
-| Tarea / Módulo | Responsable(s) |
+| Estudiante | Rol Principal |
 | :--- | :--- |
-| Diseño de Clases y Arquitectura Inicial (UML) | Ambos |
-| Implementación del Árbol de Carpetas | Franco Villalva |
-| Desarrollo de la Interfaz de Usuario por Consola | Oriana Casas |
-| Lógica de Gestión de Correos (Enviar, Recibir, Mover) | Ambos |
-| sistema basica de Busqueda Usuario/Asunto | Ambos  |
-| sistema avanzado de busqueda (recursivo) por Usuario/Asunto | Oriana Casas|
-| Funciones de Árboles Generales en las Subcarpetas | Franco Villalva |
-| Desarrollo y Edición del Material Extra | Oriana Casas |
-| Documentación final y README.md | Franco Villalva |
-| Gestión del Proyecto en Trello | Ambos |
+| **Franco Villalva** | Arquitectura de Árboles, Documentación |
+| **Oriana Casas** | Lógica de Búsqueda (Grafos/DFS), Interfaz, QA |
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## Estructura
-1.  El proyecto está completamente enfocado en la POO (programacion orientada a objetos).
-2.  Tambien utilizamos arboles generales para armar la gestion de las carpetas.
+---
+
+##  Arquitectura y Estructuras de Datos
+
+El núcleo del proyecto no es solo POO, sino la implementación eficiente de estructuras no lineales:
+
+* **Árboles Generales (N-arios):** Implementación manual usando la estrategia "Primer Hijo, Siguiente Hermano" para la jerarquía de carpetas de usuario.
+* **Grafos & DFS (Búsqueda en Profundidad):** Algoritmo recursivo para simular el enrutamiento de red entre diferentes dominios de correo (ej: `hotmail` -> `gmail`).
+* **Colas de Prioridad (Heaps):** Uso de `heapq` para gestionar la bandeja de "Importantes", garantizando que los mensajes de prioridad Alta (1) se procesen antes que los de prioridad Baja (3).
+
+---
+
+##  Instrucciones de Instalación y Uso
+
+### 1. Requisitos Previos
+* Python 3.13.7 o superior.
+* Git instalado.
+
+### 2. Instalación
+Clona el repositorio y accede al directorio:
+
+`git clone https://github.com/frankko89/Cliente-de-Correo-Electr-nico-Email-Client-.git`
+`cd Cliente-de-Correo-Electr-nico-Email-Client-`
+
+### 3. Ejecución del Programa
+Para iniciar la interfaz de consola:
+
+`python código/main.py`
+
+---
+
+## 🧪 Testing y Calidad (QA)
+
+Este proyecto cuenta con una suite de pruebas automatizadas utilizando **Pytest** para validar la integridad de las estructuras de datos.
+
+### Ejecutar los Tests
+Para verificar la robustez del sistema, ejecuta el siguiente comando en la raíz del proyecto:
+
+`python -m pytest`
+
+**Cobertura de las pruebas:**
+*  **Integridad Estructural:** Verifica que los nodos del árbol de carpetas mantengan sus referencias (hijos/hermanos).
+*  **Lógica de Negocio:** Valida el movimiento de mensajes y excepciones.
+*  **Algoritmos:** Prueba el ordenamiento del Heap y la búsqueda de caminos en el Grafo de dominios.
+
+---
+
+## 📊 Gestión del Proyecto
+El seguimiento de tareas se realizó mediante metodología Kanban en Trello.
+🔗 [Ver Tablero de Trello](https://trello.com/invite/b/68cb2f9d6afe8879e2649caf/ATTIafefb4045afbd8ba7891898b48dd02fcF9DAC096/proyecto-de-correos)
