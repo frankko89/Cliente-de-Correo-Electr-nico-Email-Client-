@@ -69,4 +69,4 @@ Para verificar la robustez del sistema, ejecuta el siguiente comando en la raíz
 
 ## Gestión del Proyecto
 El seguimiento de tareas se realizó mediante metodología Kanban en Trello.
-🔗 [Ver Tablero de Trello](https://trello.com/invite/b/68cb2f9d6afe8879e2649caf/ATTIafefb4045afbd8ba7891898b48dd02fcF9DAC096/proyecto-de-correos)
+🔗 [Ver Tablero de Trello](https://trello.com/b/twW52Da4/proyecto-de-correos)
