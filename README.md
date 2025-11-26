@@ -10,7 +10,7 @@ Este proyecto simula un cliente de correo electrónico completo (backend logic),
 
 * **Materia:** Estructura de Datos
 * **Profesor:** Dr. Diego Agustín Ambrossio (Comisión N° 2)
-* * **Equipo:** Grupo 28 . orianacasasardone@gmail.com | fnvillalva.17@gmail.com
+* **Equipo:** Grupo 28 - orianacasasardone@gmail.com | fnvillalva.17@gmail.com
 * **Estado:** Finalizado / Testeado
 
 ###  Equipo de Desarrollo
@@ -51,7 +51,7 @@ Para iniciar la interfaz de consola:
 
 ---
 
-## 🧪 Testing y Calidad (QA)
+## Testing y Calidad (QA)
 
 Este proyecto cuenta con una suite de pruebas automatizadas utilizando **Pytest** para validar la integridad de las estructuras de datos.
 
@@ -67,6 +67,6 @@ Para verificar la robustez del sistema, ejecuta el siguiente comando en la raíz
 
 ---
 
-## 📊 Gestión del Proyecto
+## Gestión del Proyecto
 El seguimiento de tareas se realizó mediante metodología Kanban en Trello.
 🔗 [Ver Tablero de Trello](https://trello.com/invite/b/68cb2f9d6afe8879e2649caf/ATTIafefb4045afbd8ba7891898b48dd02fcF9DAC096/proyecto-de-correos)
