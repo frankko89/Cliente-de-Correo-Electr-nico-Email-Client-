@@ -10,6 +10,7 @@ Este proyecto simula un cliente de correo electrónico completo (backend logic),
 
 * **Materia:** Estructura de Datos
 * **Profesor:** Dr. Diego Agustín Ambrossio (Comisión N° 2)
+* * **Equipo:** Grupo 28 . orianacasasardone@gmail.com | fnvillalva.17@gmail.com
 * **Estado:** Finalizado / Testeado
 
 ###  Equipo de Desarrollo
